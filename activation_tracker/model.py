@@ -1,16 +1,16 @@
 from __future__ import annotations
 
-from typing import List, Dict
-
 import torch
 import torch.nn as nn
+from activation import Activation
+from activation import ActivationFilter
 
 
 class ModelWithActivations(nn.Module):
     def __init__(
         self,
         model: nn.Module,
-        activation_filters: Dict[str, List[ActivationFilter]] | None = None,
+        activation_filters: dict[str, list[ActivationFilter]] | None = None,
         example_input: torch.Tensor | None = None,
     ) -> None:
         super().__init__()
@@ -21,7 +21,7 @@ class ModelWithActivations(nn.Module):
         self._activations = []
         self._register_activation_hook()
         if activation_filters is None:
-            activation_filters = {"all": []}
+            activation_filters = {'all': []}
         self.activation_filters = activation_filters
         if example_input is not None:
             self(example_input)  # recon pass
@@ -45,7 +45,9 @@ class ModelWithActivations(nn.Module):
         activations = self.activations
         activations_values = {}
         for name, activations in activations.items():
-            activations_values[name] = [activation.value for activation in activations]
+            activations_values[name] = [
+                activation.value for activation in activations
+            ]
         return activations_values
 
     def _register_activation_hook(self):

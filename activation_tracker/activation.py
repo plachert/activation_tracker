@@ -1,10 +1,8 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import List, Dict
 
 import torch
-import torch.nn as nn
 
 SUPPORTED_FILTERS = {}
 
@@ -18,7 +16,7 @@ def register_filter(cls):
 class Activation:
     layer_type: str
     output_shape: tuple
-    value: torch.Tensor 
+    value: torch.Tensor
 
 
 class ActivationFilter:
