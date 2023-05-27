@@ -1,3 +1,6 @@
+"""
+This module provides strategies of filtering activations.
+"""
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -51,7 +54,7 @@ class IndexActivationFilter(ActivationFilter):
     """Filter by indices of the activations."""
 
     def __init__(self, indices: list[int]) -> None:
-        self.indices = list(map(int, indices))
+        self.indices = indices
 
     def filter_activations(self, activations: list[Activation]) -> list[Activation]:
         return [activations[idx] for idx in self.indices]
@@ -62,23 +65,23 @@ class IndexActivationFilter(ActivationFilter):
 
 
 @register_filter
-class TargetsActivationFitler(ActivationFilter):
+class TargetsActivationFilter(ActivationFilter):
     """Preserve neurons associated with given classes."""
 
     def __init__(self, indices: list[int]) -> None:
-        self.indices = list(map(int, indices))
+        self.indices = indices
 
     def filter_activations(self, activations: list[Activation]) -> list[Activation]:
         last_activation = activations[-1]  # last layer
-        activations = []
+        result_activations = []
         for idx in self.indices:
             # In this case it's just a label of the neuron associated with a given idx
             layer_type = f'target_{idx}'
             value = last_activation.value[:, idx]
             output_shape = value.shape
             activation = Activation(layer_type, output_shape, value)
-            activations.append(activation)
-        return activations
+            result_activations.append(activation)
+        return result_activations
 
     @staticmethod
     def list_all_available_parameters(activations: list[Activation]) -> list:

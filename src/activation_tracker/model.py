@@ -21,8 +21,7 @@ class ModelWithActivations(nn.Module):
             param.requires_grad = False
         self._activations = []
         self._register_activation_hook()
-        if activation_filters is None:
-            activation_filters = {'all': []}
+        self.activation_filters = activation_filters or {'all': []}
         self.activation_filters = activation_filters
         if example_input is not None:
             self(example_input)  # recon pass
@@ -41,13 +40,13 @@ class ModelWithActivations(nn.Module):
         return filtered_activations
 
     @property
-    def activations_values(self):
+    def activations_values(self) -> dict[str, list[torch.Tensor]]:
         """Return values of the filtered activations."""
         activations = self.activations
         activations_values = {}
-        for name, activations in activations.items():
+        for name, activations_list in activations.items():
             activations_values[name] = [
-                activation.value for activation in activations
+                activation.value for activation in activations_list
             ]
         return activations_values
 
