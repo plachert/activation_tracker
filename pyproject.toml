@@ -18,3 +18,7 @@ pytest = "^7.3.1"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[build-system.git]
+commit = "HEAD"
+repository = "https://github.com/plachert/activation_tracker.git"
