@@ -8,7 +8,11 @@ packages = [{include = "activation_tracker"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
+torch = "^2.0.1"
 
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = "^3.3.2"
 
 [build-system]
 requires = ["poetry-core"]
