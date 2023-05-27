@@ -50,6 +50,10 @@ class ModelWithActivations(nn.Module):
             ]
         return activations_values
 
+    def forward(self, input_):
+        self._activations.clear()
+        return self.model.forward(input_)
+
     def _register_activation_hook(self):
         def activation_hook(module, input_, output):
             layer_type = module.__class__.__name__
@@ -59,10 +63,6 @@ class ModelWithActivations(nn.Module):
             self._activations.append(activation)
         for layer in flatten_modules(self.model):
             layer.register_forward_hook(activation_hook)
-
-    def forward(self, input_):
-        self._activations.clear()
-        return self.model.forward(input_)
 
 
 def flatten_modules(module):
