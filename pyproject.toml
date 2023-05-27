@@ -1,24 +1,29 @@
-[tool.poetry]
-name = "activation-tracker"
-version = "0.1.0"
-description = ""
-authors = ["plachert <pmlachert@gmail.com>"]
-readme = "README.md"
-packages = [{include = "activation_tracker"}]
-
-[tool.poetry.dependencies]
-python = "^3.10"
-torch = "^2.0.1"
-
-
-[tool.poetry.group.dev.dependencies]
-pre-commit = "^3.3.2"
-pytest = "^7.3.1"
-
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
 
-[build-system.git]
-commit = "HEAD"
-repository = "https://github.com/plachert/activation_tracker.git"
+[project]
+name = "activation_tracker"
+version = "1.0.0"
+description = "Tools for accessing and filtering activations in a Torch nn.Module."
+readme = {file = "README.md", content-type = "text/markdown"}
+authors = [
+    {name = "Piotr Lachert", email = "pmlachert@gmail.com"},
+]
+license = {text = "MIT"}
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.10",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "torch >= 2.0.1",
+]
+requires-python = ">=3.10"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "twine>=4.0.2",
+    "build",
+]

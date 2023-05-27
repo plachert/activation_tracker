@@ -2,8 +2,9 @@ from __future__ import annotations
 
 import torch
 import torch.nn as nn
-from activation import Activation
-from activation import ActivationFilter
+
+from .activation import Activation
+from .activation import ActivationFilter
 
 
 class ModelWithActivations(nn.Module):
