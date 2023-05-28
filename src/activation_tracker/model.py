@@ -38,7 +38,6 @@ class ModelWithActivations(nn.Module):
         self._activations = []
         self._register_activation_hook()
         self.activation_filters = activation_filters or {'all': []}
-        self.activation_filters = activation_filters
         if example_input is not None:
             self(example_input)  # recon pass
 
