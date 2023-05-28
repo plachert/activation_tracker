@@ -166,7 +166,7 @@ class TargetsActivationFilter(ActivationFilter):
         for idx in self.indices:
             # In this case, it's just a label of the neuron associated with a given idx
             layer_type = f'target_{idx}'
-            value = last_activation.value[:, idx]
+            value = last_activation.value[:, idx:idx+1]
             output_shape = value.shape
             activation = Activation(layer_type, output_shape, value)
             result_activations.append(activation)

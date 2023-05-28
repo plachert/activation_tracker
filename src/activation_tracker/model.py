@@ -77,6 +77,15 @@ class ModelWithActivations(nn.Module):
         return activations_values
 
     def forward(self, input_):
+        """
+        Clear previous activations and perform a forward pass through the model.
+
+        Args:
+            input_: The input tensor to the model.
+
+        Returns:
+            torch.Tensor: The output tensor from the model.
+        """
         self._activations.clear()
         return self.model.forward(input_)
 
