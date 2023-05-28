@@ -30,6 +30,8 @@ Verify installation:
 ```
 
 ### Usage Examples
+
+1. The following example demonstrates how one can combine filters to get the activations of interest. Also, as we can pass more than one combination of filters and group them in a dictionary. I found this very helpful when experimenting with Neural Style Transfer. You can now easily pass a set of activations for `content` and `style`.
 ```python
 from __future__ import annotations
 
@@ -78,8 +80,44 @@ if __name__ == '__main__':
     model(input_)  # we have to call forward pass to register the activations
     print(model_with_activations.activations_values)
 ```
+2. You can also use the tool to easily visualise feature maps.
+```python
+from activation_tracker.activation import TypeActivationFilter
+from activation_tracker.model import ModelWithActivations
+
+model = # e.g. vgg16
+input_image = # proper input e.g. (1, 3, 224, 224)
+filters = {"feat_maps": TypeActivationFilter(["Conv2d"])}
+model_with_activations = ModelWithActivations(
+        model=model,
+        activation_filters=activation_filters,
+        example_input=None,
+    )
+model(input_image)
+feat_maps = model_with_activations.activations_values # list of feature maps for each conv2 layer
+# display the maps
+
+```
+
+3. Developing your own filtering strategies, e.g.
+```python
+from activation_tracker.activation import ActivationFilter
 
 
+class StrongestActivationFilter(ActivationFilter):
+    def __init__(self, percentile: float):
+        self.percentile = percentile
+
+    def filter_activations(self, activations):
+        """Return the strongest neurons in each layer"""
+
+    @staticmethod
+    def list_all_available_parameters(activations):
+        """Optional, explained later"""
+```
+
+### `list_all_available_parameters`
+This method is optional. Its purpose is to return all the values that we can filter in terms of the selected strategy, e.g. calling this method from TypeActivationFilter on some list of activations will return all the types of these activations.
 ## Licence
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/plachert/activation_tracker/blob/main/LICENSE)
