@@ -24,8 +24,8 @@ class MockModel(torch.nn.Module):
 
 def test_empty_activations():
     m = model.ModelWithActivations(MockModel())
-    assert m.activations == {'all': []}
-    assert m.activations_values == {'all': []}
+    with pytest.raises(model.NoActivationsError):
+        m.activations
 
 
 def test_unfiltered():
@@ -61,18 +61,18 @@ def test_activations():
     assert activations['linear'][1].layer_type == 'Linear'
     assert activations['relu'][0].layer_type == 'ReLU'
     assert activations['relu'][1].layer_type == 'ReLU'
-    
-    
+
+
 def test_combination():
     combined = {
-        "first_relu": [
-            activation.TypeActivationFilter(["ReLU"]),
+        'first_relu': [
+            activation.TypeActivationFilter(['ReLU']),
             activation.IndexActivationFilter([0]),
-            ],
-        "last_linear": [
-            activation.TypeActivationFilter(["Linear"]),
+        ],
+        'last_linear': [
+            activation.TypeActivationFilter(['Linear']),
             activation.IndexActivationFilter([-1]),
-        ]
+        ],
     }
     m = model.ModelWithActivations(
         MockModel(), combined, torch.rand(1, 10),
@@ -80,8 +80,8 @@ def test_combination():
     activations = m.activations
     assert len(activations['first_relu']) == 1
     assert len(activations['last_linear']) == 1
-    assert activations['first_relu'][0].layer_type == "ReLU"
-    assert activations['last_linear'][0].layer_type == "Linear"
+    assert activations['first_relu'][0].layer_type == 'ReLU'
+    assert activations['last_linear'][0].layer_type == 'Linear'
     assert activations['first_relu'][0].output_shape == torch.Size([1, 5])
     assert activations['last_linear'][0].output_shape == torch.Size([1, 3])
 

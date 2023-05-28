@@ -10,6 +10,10 @@ from .activation import Activation
 from .activation import ActivationFilter
 
 
+class NoActivationsError(Exception):
+    pass
+
+
 class ModelWithActivations(nn.Module):
     def __init__(
         self,
@@ -49,6 +53,8 @@ class ModelWithActivations(nn.Module):
         Returns:
             dict[str, list[Activation]]: Dict of filtered activations.
         """
+        if not self._activations:
+            raise NoActivationsError('Run forward pass first.')
         filtered_activations = {}
         for name, filters in self.activation_filters.items():
             if not filters:
