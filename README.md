@@ -31,7 +31,7 @@ Verify installation:
 
 ### Example
 
-https://github.com/plachert/activation_tracker/blob/main/examples/simple_usage.py
+https://github.com/plachert/activation_tracker/blob/2b6d42787a9365c03d372531840bcc9fd6a2a5c5/examples/simple_usage.py#L1-L46
 
 
 
