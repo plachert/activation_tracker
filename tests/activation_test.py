@@ -83,6 +83,8 @@ def test_list_target_parameters(mock_activations):
     )
     assert all_targets == [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
+    
+
 
 if __name__ == '__main__':
     pytest.main()

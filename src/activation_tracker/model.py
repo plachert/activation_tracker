@@ -42,12 +42,12 @@ class ModelWithActivations(nn.Module):
             self(example_input)  # recon pass
 
     @property
-    def activations(self) -> list[Activation]:
+    def activations(self) -> dict[str, Activation]:
         """
         Return activations based on the activation_filters.
 
         Returns:
-            list[Activation]: List of filtered activations.
+            dict[str, list[Activation]]: Dict of filtered activations.
         """
         filtered_activations = {}
         for name, filters in self.activation_filters.items():
