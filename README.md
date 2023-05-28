@@ -12,9 +12,29 @@ The code is built around three classes:
 - `ModelWithActivations` - `torch.nn.Module` that tracks the activations of a given model. It uses the filters to return the activations of interest.
 
 ## Getting Started
+
 ### Installing
 Run the following command in your virtual env.
 
-```bash
-pip install git+https://github.com/plachert/activation_tracker
+```shell
+(venv) foo@bar:~$ pip install git+https://github.com/plachert/activation_tracker
 ```
+
+Verify installation:
+```shell
+(venv) foo@bar:~$ python
+>>> import activation_tracker
+>>> activation_tracker.__version__
+'1.0.0`
+>>>
+```
+
+### Example
+
+https://github.com/plachert/activation_tracker/blob/main/examples/simple_usage.py
+
+
+
+## Licence
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/plachert/activation_tracker/blob/main/LICENSE)
