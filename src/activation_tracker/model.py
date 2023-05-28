@@ -1,3 +1,6 @@
+"""
+This module provides a torch.nn.Module wrapper that tracks activations.
+"""
 from __future__ import annotations
 
 import torch
@@ -14,6 +17,19 @@ class ModelWithActivations(nn.Module):
         activation_filters: dict[str, list[ActivationFilter]] | None = None,
         example_input: torch.Tensor | None = None,
     ) -> None:
+        """
+        Initialize the ModelWithActivations.
+
+        Args:
+            model (nn.Module): The underlying model to track activations for.
+            activation_filters (dict[str, list[ActivationFilter]] | None, optional):
+                Dictionary of activation filters to apply. The keys represent names for
+                the filtered activations. The values are lists of `ActivationFilter`
+                objects. If None, a default filter named 'all' is applied to track all
+                activations. Defaults to None.
+            example_input (torch.Tensor | None, optional): An example input tensor to
+                trigger a forward pass and populate initial activations. Defaults to None.
+        """
         super().__init__()
         self.model = model
         self.model.eval()
@@ -27,8 +43,13 @@ class ModelWithActivations(nn.Module):
             self(example_input)  # recon pass
 
     @property
-    def activations(self) -> list[torch.Tensor]:
-        """Return activations based on the activation_filters."""
+    def activations(self) -> list[Activation]:
+        """
+        Return activations based on the activation_filters.
+
+        Returns:
+            list[Activation]: List of filtered activations.
+        """
         filtered_activations = {}
         for name, filters in self.activation_filters.items():
             if not filters:
@@ -41,7 +62,12 @@ class ModelWithActivations(nn.Module):
 
     @property
     def activations_values(self) -> dict[str, list[torch.Tensor]]:
-        """Return values of the filtered activations."""
+        """
+        Return values of the filtered activations.
+
+        Returns:
+            dict[str, list[torch.Tensor]]: Dictionary of filtered activation values.
+        """
         activations = self.activations
         activations_values = {}
         for name, activations_list in activations.items():
@@ -55,6 +81,9 @@ class ModelWithActivations(nn.Module):
         return self.model.forward(input_)
 
     def _register_activation_hook(self):
+        """
+        Register the activation hook to track activations during forward pass.
+        """
         def activation_hook(module, input_, output):
             layer_type = module.__class__.__name__
             output_shape = output.shape
@@ -66,6 +95,15 @@ class ModelWithActivations(nn.Module):
 
 
 def flatten_modules(module):
+    """
+    Return a list of all layers in the module.
+
+    Args:
+        module: The input module.
+
+    Returns:
+        list: List of all layers in the module.
+    """
     flattened_modules = []
     for child in module.children():
         if isinstance(child, nn.Sequential):
